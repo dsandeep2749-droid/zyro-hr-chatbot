@@ -26,9 +26,9 @@ def build_rag():
 
     from glob import glob
 
-pdf_paths = glob("*.pdf")
+    pdf_paths = glob("data/*.pdf")
 
-documents = []
+    documents = []
 
     for pdf in pdf_paths:
         loader = PyPDFLoader(pdf)
