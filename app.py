@@ -24,7 +24,9 @@ st.title("💼 Zyro Dynamics HR Help Desk")
 @st.cache_resource
 def build_rag():
 
-    pdf_paths = glob("/kaggle/input/**/*.pdf", recursive=True)
+    from glob import glob
+
+pdf_paths = glob("data/*.pdf")
 
     documents = []
 
