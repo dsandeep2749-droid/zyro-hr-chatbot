@@ -53,7 +53,7 @@ def build_rag():
     )
 
     llm = ChatGroq(
-        model="llama3-8b-8192",
+        model="llama-3.1-8b-instant",
         temperature=0,
         max_tokens=512
     )
@@ -107,19 +107,24 @@ if query:
     if len(docs_and_scores) == 0 or docs_and_scores[0][1] > SIMILARITY_THRESHOLD:
         response = "I can only answer questions related to Zyro Dynamics HR policies."
         sources = []
+
     else:
         try:
             response = chain.invoke(query)
+            sources = docs_and_scores
+
         except Exception as e:
-            st.error(str(e))
-        sources = docs_and_scores
+            response = f"Error: {str(e)}"
+            sources = []
 
     with st.chat_message("assistant"):
         st.write(response)
 
-        if sources:
-            st.subheader("📚 Sources")
-            for doc, score in sources:
-                st.write(
-                    f"File: {doc.metadata.get('source')} | Page: {doc.metadata.get('page')}"
-                )
+    if sources:
+        st.subheader("📖 Sources")
+
+        for doc, score in sources:
+            st.write(
+                f"File: {doc.metadata.get('source')} | "
+                f"Page: {doc.metadata.get('page')}"
+            )
