@@ -20,7 +20,6 @@ st.set_page_config(page_title="Zyro HR Help Desk", page_icon="💼")
 
 st.title("💼 Zyro Dynamics HR Help Desk")
 
-
 @st.cache_resource
 def build_rag():
 
