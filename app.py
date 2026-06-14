@@ -48,8 +48,8 @@ def build_rag():
     vectorstore = FAISS.from_documents(chunks, embeddings)
 
     retriever = vectorstore.as_retriever(
-        search_type="mmr",
-        search_kwargs={"k": 3, "fetch_k": 10}
+        search_type="similarity",
+        search_kwargs={"k": 4}
     )
 
     llm = ChatGroq(
