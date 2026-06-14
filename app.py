@@ -49,11 +49,11 @@ def build_rag():
 
     retriever = vectorstore.as_retriever(
         search_type="mmr",
-        search_kwargs={"k": 5, "fetch_k": 15}
+        search_kwargs={"k": 3, "fetch_k": 10}
     )
 
     llm = ChatGroq(
-        model_name="llama3-8b-8192",
+        model="llama3-8b-8192",
         temperature=0,
         max_tokens=512
     )
@@ -75,7 +75,7 @@ def build_rag():
     """)
 
     def format_docs(docs):
-        return "\n\n".join(doc.page_content for doc in docs)[:3000]
+        return "\n\n".join(doc.page_content for doc in docs)[:800]
 
     chain = (
         {
@@ -108,7 +108,10 @@ if query:
         response = "I can only answer questions related to Zyro Dynamics HR policies."
         sources = []
     else:
-        response = chain.invoke(query)
+        try:
+            response = chain.invoke(query)
+        except Exception as e:
+            st.error(str(e))
         sources = docs_and_scores
 
     with st.chat_message("assistant"):
